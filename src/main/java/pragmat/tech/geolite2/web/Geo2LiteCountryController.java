@@ -18,4 +18,9 @@ public class Geo2LiteCountryController {
     public String getCountryName(@RequestParam String ip){
        return   geoLite2CountryService.getNameOfCountry(ip);
     }
+
+    @GetMapping("/getRegionByIp")
+    public String getRegionName(@RequestParam String ip){
+        return   geoLite2CountryService.getRegionOfCountry(ip);
+    }
 }
