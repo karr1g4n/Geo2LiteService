@@ -1,47 +1,44 @@
 package pragmat.tech.geolite2.service;
 
 import com.maxmind.geoip2.DatabaseReader;
+import com.maxmind.geoip2.exception.GeoIp2Exception;
 import com.maxmind.geoip2.model.CountryResponse;
-import com.maxmind.geoip2.record.Continent;
 import com.maxmind.geoip2.record.Country;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.InetAddress;
+import java.util.List;
 
-
+@Slf4j
 @Service
+
 public class GeoLite2CountryService {
-    public String getNameOfCountry(String ip){
-        String url = "D:\\GeoLite2\\GeoLite2-Country.mmdb";
-        FileInputStream database;
-        try {
-            database = new FileInputStream(url);
-            DatabaseReader reader = new DatabaseReader.Builder(database).build();
-            InetAddress ipAddress = InetAddress.getByName(ip);
-            CountryResponse response = reader.country(ipAddress);
-            Country country = response.getCountry();
-//            Country country=response.getRegisteredCountry();
-            return country.getName();
-        } catch (Exception e) {
-            return "not found";
-        }
+    private FileInputStream database;
+    private DatabaseReader reader;
+    @Value("${geolite2.url}")
+    private String urlString;
+
+    @PostConstruct
+    void init() throws IOException {
+        log.info(urlString);
+        log.info(urlString);
+        this.database = new FileInputStream(urlString);
+        this.reader = new DatabaseReader.Builder(this.database).build();
     }
 
+    public String getNameOfCountry(String ip) throws IOException, GeoIp2Exception {
+        InetAddress ipAddress = InetAddress.getByName(ip);
+        CountryResponse response = reader.country(ipAddress);
+        Country country = response.getCountry();
 
-    public String getRegionOfCountry(String ip){
-        String url = "D:\\GeoLite2\\GeoLite2-Country.mmdb";
-        FileInputStream database;
-        try {
-            database = new FileInputStream(url);
-            DatabaseReader reader = new DatabaseReader.Builder(database).build();
-            InetAddress ipAddress = InetAddress.getByName(ip);
-            CountryResponse response = reader.country(ipAddress);
-//            Country country = response.getCountry();
-            Continent country=response.getContinent();
-            return country.getName();
-        } catch (Exception e) {
-            return "not found";
-        }
+        return country.getName();
     }
+
 }

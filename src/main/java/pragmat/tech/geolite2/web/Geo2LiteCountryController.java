@@ -1,9 +1,12 @@
 package pragmat.tech.geolite2.web;
 
-import org.springframework.stereotype.Controller;
+import com.maxmind.geoip2.exception.GeoIp2Exception;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import pragmat.tech.geolite2.service.GeoLite2CountryService;
+import java.io.IOException;
 
+@Slf4j
 @RestController
 @RequestMapping("/Geo2LiteCountry")
 public class Geo2LiteCountryController {
@@ -15,12 +18,10 @@ public class Geo2LiteCountryController {
     }
 
     @GetMapping("/getCountryByIp")
-    public String getCountryName(@RequestParam String ip){
+    public String getCountryName(@RequestParam String ip) throws IOException, GeoIp2Exception {
+        log.info("try get name of country by ip");
        return   geoLite2CountryService.getNameOfCountry(ip);
     }
 
-    @GetMapping("/getRegionByIp")
-    public String getRegionName(@RequestParam String ip){
-        return   geoLite2CountryService.getRegionOfCountry(ip);
-    }
+
 }
