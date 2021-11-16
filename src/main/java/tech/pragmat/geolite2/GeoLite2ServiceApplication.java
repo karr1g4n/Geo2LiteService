@@ -1,9 +1,7 @@
-package pragmat.tech.geolite2;
+package tech.pragmat.geolite2;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 
 @SpringBootApplication
 public class GeoLite2ServiceApplication {

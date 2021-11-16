@@ -1,9 +1,9 @@
-package pragmat.tech.geolite2.web;
+package tech.pragmat.geolite2.web;
 
 import com.maxmind.geoip2.exception.GeoIp2Exception;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import pragmat.tech.geolite2.service.GeoLite2CountryService;
+import tech.pragmat.geolite2.service.GeoLite2CountryService;
 import java.io.IOException;
 
 @Slf4j
@@ -11,7 +11,7 @@ import java.io.IOException;
 @RequestMapping("/Geo2LiteCountry")
 public class Geo2LiteCountryController {
 
-    private GeoLite2CountryService geoLite2CountryService;
+    private final GeoLite2CountryService geoLite2CountryService;
 
     public Geo2LiteCountryController( GeoLite2CountryService geoLite2CountryService){
         this.geoLite2CountryService=geoLite2CountryService;
