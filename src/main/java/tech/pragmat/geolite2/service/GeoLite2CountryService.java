@@ -1,7 +1,6 @@
 package tech.pragmat.geolite2.service;
 
 import com.maxmind.geoip2.DatabaseReader;
-import com.maxmind.geoip2.exception.GeoIp2Exception;
 import com.maxmind.geoip2.model.CountryResponse;
 import com.maxmind.geoip2.record.Country;
 import lombok.extern.slf4j.Slf4j;
@@ -30,11 +29,16 @@ public class GeoLite2CountryService {
         this.reader = new DatabaseReader.Builder(this.database).build();
     }
 
-    public String getNameOfCountry(String ip) throws IOException, GeoIp2Exception {
-        InetAddress ipAddress = InetAddress.getByName(ip);
-        CountryResponse response = reader.country(ipAddress);
-        Country country = response.getCountry();
-        return country.getName();
-    }
+    public String getNameOfCountry(String ip) {
+        try {
+            InetAddress ipAddress = InetAddress.getByName(ip);
+            CountryResponse response = reader.country(ipAddress);
+            Country country = response.getCountry();
+            return country.getName();
+        } catch (Exception e) {
+            log.error(String.valueOf(e));
+        }
+        return null;
 
+    }
 }
